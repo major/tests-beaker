@@ -218,6 +218,14 @@ function rpm_install()
     echo "No package kernel-headers-${KVER} found, skipping!" | tee -a ${OUTPUTFILE}
   fi
 
+  # Install additional packages.
+  $YUM install -y \
+    ${PACKAGE_NAME}-core-$KVER \
+    ${PACKAGE_NAME}-debuginfo-$KVER \
+    ${PACKAGE_NAME}-debuginfo-common-$KVER \
+    ${PACKAGE_NAME}-modules-$KVER \
+    ${PACKAGE_NAME}-modules-extra-$KVER 2>&1 | tee -a ${OUTPUTFILE}
+
   # The package was renamed (and temporarily aliased) in Fedora/RHEL
   if $YUM search kernel-firmware | grep "^kernel-firmware\.noarch" ; then
       $YUM install -y kernel-firmware >>${OUTPUTFILE} 2>&1
